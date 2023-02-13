@@ -18,6 +18,9 @@ function App() {
       telp: "08815646413",
     },
   ])
+
+  // buat state untuk update
+  const [isUpdate, setIsUpdate] = useState({ id: null, status: false })
   // buat dulu state untuk menyimpan data form
   const [formData, setFormData] = useState({
     name: "",
@@ -37,6 +40,9 @@ function App() {
   function handleSubmit(e) {
     e.preventDefault()
     alert("Data berhasil dibuat")
+    // menambahkan contact
+    //copy data yang ada dicontact
+    let data = [...contacts]
     // validasi
     if (formData.name === "") {
       return false
@@ -44,13 +50,38 @@ function App() {
     if (formData.telp === "") {
       return false
     }
-    // menambahkan contact
-    //copy data yang ada dicontact
-    let data = [...contacts]
-    // lakukan penambahan data
-    data.push({ id: uid(), name: formData.name, telp: formData.telp })
+
+    // check status
+    if (isUpdate.status) {
+      data.forEach((contact) => {
+        if (contact.id === isUpdate.id) {
+          contact.name = formData.name
+          contact.telp = formData.telp
+        }
+      })
+    } else {
+      // lakukan penambahan data
+      data.push({ id: uid(), name: formData.name, telp: formData.telp })
+    }
+
     // simpan perubahan
     setContacts(data)
+    // set data menjadi kosong setelah isi data
+    setFormData({ name: "", telp: "" })
+    // reset state isUpdate
+    setIsUpdate({ id: null, status: false })
+  }
+
+  // buat function untuk update data
+  function handleUpdate(id) {
+    // clone data contacts
+    let data = [...contacts]
+    // cari dulu id berdasarkan id yang dipilih
+    let formData = data.find((contact) => contact.id === id)
+    // jika ketemu set data
+    setFormData({ name: formData.name, telp: formData.telp })
+    // set id dan status menjadi true
+    setIsUpdate({ id: id, status: true })
   }
   return (
     <div className="App">
@@ -86,7 +117,8 @@ function App() {
         </div>
       </form>
       {/* oper data props kedalam list  */}
-      <List data={contacts} />
+      {/* pasang function handleUpdate */}
+      <List handleUpdate={handleUpdate} data={contacts} />
     </div>
   )
 }

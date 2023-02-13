@@ -37,3 +37,14 @@
             - import uid
         3.  pengujian pada browser:
             - coba lakukan penambahan data,jika setup yang kita lakukan berhasil akan ada data yang tampil ketika data di create
+
+## Update Data (Update Data)
+
+    Todo :
+        1.  App.js
+            - buat state untuk update
+            - check status
+            - buat function untuk update data
+            - pasang function handleUpdate
+            - set data menjadi kosong setelah isi data
+            - reset state isUpdate setelah melakukan perubahan
